@@ -16,9 +16,9 @@ class ReadabilityScorer:
         self.nb_syllables = 0
         self.nb_sentences = 0
 
-    def add_sentence(self, sentence):
-        self.nb_words += count_words(remove_punctuation_tokens(sentence))
-        self.nb_syllables += count_syllables_in_sentence(sentence)
+    def add_sentence(self, sentence, lang):
+        self.nb_words += count_words(remove_punctuation_tokens(sentence, lang=lang), lang)
+        self.nb_syllables += count_syllables_in_sentence(sentence, lang=lang)
         self.nb_sentences += 1
 
     def score(self):
@@ -31,15 +31,15 @@ class ReadabilityScorer:
         return (fre, fkgl)
 
 
-def sentence_fre(sentence):
+def sentence_fre(sentence, lang):
     scorer = ReadabilityScorer()
-    scorer.add_sentence(sentence)
+    scorer.add_sentence(sentence, lang)
     fre, fkgl = scorer.score()
     return fre
 
 
-def sentence_fkgl(sentence):
+def sentence_fkgl(sentence, lang):
     scorer = ReadabilityScorer()
-    scorer.add_sentence(sentence)
+    scorer.add_sentence(sentence, lang)
     fre, fkgl = scorer.score()
     return fkgl

@@ -138,7 +138,7 @@ def count_syllables_per_word(sentence, lang):
 
 
 def max_pos_in_freq_table(sentence, lang):
-    #to_embeddings("", lang)
+    to_embeddings("", lang)
     return max(get_frequency_table_ranks(sentence, lang=lang))
 
 

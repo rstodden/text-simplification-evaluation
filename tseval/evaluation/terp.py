@@ -40,8 +40,10 @@ def terp(reference_filepath, hypothesis_filepath, output_dir=tempfile.mkdtemp())
     # Compute terp
     cmd = f'cd {output_dir}; {TERP_PATH} -r {tmp_reference_filepath} -h {tmp_hypothesis_filepath}; cd -;'
     stdout = run_command(cmd)
-    m = re.search(r'Total TER: (\d+\.\d+) \(', stdout)
-    return float(m.groups()[0])
+    m = re.search(r'Total TER: (\d+,\d+) \(', stdout)
+    result = m.groups()[0]
+    result = result.replace(",", ".") # german digit separator
+    return float(result)
 
 
 terp_features = ['Ins', 'Del', 'Sub', 'Stem', 'Syn', 'Phrase', 'Shft', 'WdSh', 'NumEr', 'NumWd', 'TERp']
@@ -60,29 +62,30 @@ def parse_terp_file(filepath):
         line_id = 0
         features = []
         for line in f:
+            line = line.replace(",", ".")
             m = re.match(r'\[sys\]\[doc\]\[(\d+)\] +\|(.*)', line)
             if m is None:
                 continue
             assert line_id == int(m.groups()[0])
             line_id += 1
-            features.append([float(val) for val in m.groups()[1].split('|')])
-    return np.array(features)
+            features.extend([float(val) for val in m.groups()[1].split('|')])
+    return features
 
 
-@numpy_memoize
-def get_terp_features(sentence_pairs):
+# @numpy_memoize
+def get_terp_features(complex_sentence, simple_sentence, lang):
     '''Computes intermediary terp features given a numpy array of shape (n_samples, 2) with the input sentences'''
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_dir = Path(tmp_dir)
         complex_filepath = tmp_dir / 'complex.txt'
         simple_filepath = tmp_dir / 'simple.txt'
-        write_lines(sentence_pairs[:, 0], complex_filepath)
-        write_lines(sentence_pairs[:, 1], simple_filepath)
+        write_lines([complex_sentence.text], complex_filepath)
+        write_lines([simple_sentence.text], simple_filepath)
         terp(complex_filepath, simple_filepath, output_dir=tmp_dir)
         return parse_terp_file(tmp_dir / 'terp.sum')
 
 
-def get_terp_features_on_qats_pair(complex_sentence, simple_sentence):
+def get_terp_features_on_qats_pair(complex_sentence, simple_sentence, lang):
     # Computing features on a single sentence pair is as long as computing all sentence pairs in QATS at once
     if 'QATS_TERP_FEATURES' not in globals():
         print('Computing TERp features on all QATS sentence pairs.')
@@ -107,8 +110,10 @@ def get_terp_vectorizers():
     def get_scoring_method(i):
         """Necessary to wrap the scoring_method() in get_scoring_method(), in order to set the external variable to
         its current value."""
-        def scoring_method(complex_sentence, simple_sentence):
-            return get_terp_features_on_qats_pair(complex_sentence, simple_sentence)[i]
+        def scoring_method(complex_sentence, simple_sentence, lang):
+            # todo: inefficient, it calculates the terp results per each feature
+            # generate or add all at once per pair?
+            return get_terp_features(complex_sentence, simple_sentence, lang)[i]
         return scoring_method
 
     vectorizers = []

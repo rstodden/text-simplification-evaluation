@@ -18,7 +18,7 @@ TOOLS_DIR = RESOURCES_DIR / 'tools'
 # TODO: Move this to setup or add the folders to the git repo
 for dir_path in [DOWNLOAD_DIR, RESOURCESSETS_DIR, VARIOUS_DIR, MODELS_DIR, TOOLS_DIR]:
     dir_path.mkdir(exist_ok=True, parents=True)
-FASTTEXT_EMBEDDINGS_PATH = VARIOUS_DIR / 'fasttext-vectors/cc.en.300.vec'
+FASTTEXT_EMBEDDINGS_PATH = VARIOUS_DIR / 'fasttext-vectors/'
 TERP_DIR = TOOLS_DIR / 'terp'
 TERP_PATH = TERP_DIR / 'bin/terp'
 QUEST_DIR = TOOLS_DIR / 'questplusplus'

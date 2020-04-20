@@ -47,7 +47,7 @@ def download(url, destination_path):
         raise
 
 
-def download_and_extract(url):
+def download_and_extract(url, output_dir):
     compressed_filename = url.split('/')[-1]
     compressed_filepath = os.path.join(DOWNLOAD_DIR, compressed_filename)
     # Special case for github repo zips which all have the same name, redownload everytime
@@ -55,8 +55,10 @@ def download_and_extract(url):
         os.remove(compressed_filepath)
     if not os.path.exists(compressed_filepath):
         download(url, compressed_filepath)
-    print('Extracting...')
-    return extract(compressed_filepath, DOWNLOAD_DIR)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    print('Extracting...', compressed_filepath, output_dir)
+    return extract(compressed_filepath, output_dir)
 
 
 def extract(filepath, output_dir):

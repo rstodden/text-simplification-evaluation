@@ -21,13 +21,13 @@ def get_available_resources():
             if is_prepare_method(variable)]
 
 
-def prepare_resource(resource_name):
+def prepare_resource(resource_name, lang, output_dir):
     # General method to prepare a given resource
     method_name = f'_prepare_{resource_name.lower()}'
     if method_name not in globals():
         raise NameError(f'Resouce {resource_name} does not exist.\n'
                         f'Available resources are: {", ".join(get_available_resources())}.')
-    return globals()[method_name]()
+    return globals()[method_name](lang, output_dir)
 
 
 def _prepare_qats2016():
@@ -62,6 +62,7 @@ def _prepare_brysbaert_concrete_words():
 
 
 def _prepare_fairseq_lm():
+    print("English fairseq_lm")
     # Download model
     url = 'https://dl.fbaipublicfiles.com/fairseq/models/wiki103_fconv_lm.tar.bz2'
     extracted_paths = download_and_extract(url)
@@ -78,14 +79,15 @@ def _prepare_fairseq_lm():
         move_with_overwrite(extracted_path, output_dir)
 
 
-def _prepare_fasttext_embeddings():
-    url = 'https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.en.300.vec.gz'
-    [extracted_path] = download_and_extract(url)
-    Path(FASTTEXT_EMBEDDINGS_PATH).parent.mkdir(parents=True, exist_ok=True)
-    shutil.move(extracted_path, FASTTEXT_EMBEDDINGS_PATH)
+def _prepare_fasttext_embeddings(lang, output_dir):
+    url = 'https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.'+lang+'.300.vec.gz'
+    [extracted_path] = download_and_extract(url, output_dir)
+    # Path(FASTTEXT_EMBEDDINGS_PATH).parent.mkdir(parents=True, exist_ok=True)
+    # shutil.move(extracted_path, FASTTEXT_EMBEDDINGS_PATH)
 
 
 def _prepare_wordnet():
+    print("English Wordnet")
     extracted_path = download_and_extract('http://wordnetcode.princeton.edu/3.0/WordNet-3.0.tar.gz')[0]
     move_with_overwrite(extracted_path, WORDNET_DIR)
 

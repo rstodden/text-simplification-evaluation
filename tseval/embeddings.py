@@ -12,6 +12,7 @@ import torch
 from pathlib import Path
 
 from tseval.utils.paths import FASTTEXT_EMBEDDINGS_PATH
+from tseval.utils.prepare import prepare_resource
 #from align_sentences import LANG
 
 
@@ -20,7 +21,6 @@ def load_fasttext_embeddings(vocab_size=None, lang="en"):
     # print(FASTTEXT_EMBEDDINGS_PATH_LANG)
     # os.path.join(VARIOUS_DIR, FASTTEXT_EMBEDDINGS_PATH, "cc." + lang + ".300.vec")
     if not os.path.exists(FASTTEXT_EMBEDDINGS_PATH_LANG):
-        from tseval.utils.prepare import prepare_resource
         prepare_resource('fasttext_embeddings', lang, FASTTEXT_EMBEDDINGS_PATH)
     with open(FASTTEXT_EMBEDDINGS_PATH_LANG, 'r') as f:
         # First line contains number and size of vectors
