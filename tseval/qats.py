@@ -18,7 +18,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.pipeline import Pipeline
 
 from tseval.utils.paths import VARIOUS_DIR, get_dataset_dir
-from tseval.text import nist_tokenize
+# from tseval.text import nist_tokenize
 
 
 ASPECTS = ['grammaticality', 'meaning_preservation', 'simplicity', 'overall']
@@ -73,8 +73,8 @@ def extract_data_from_dataframe(df, aspect, tokenize=True):
     aspect = {'grammaticality': 'G', 'meaning_preservation': 'M', 'simplicity': 'S', 'overall': 'Overall'}[aspect]
     label_to_int = {'bad': 0, 'ok': 50, 'good': 100}
     sentences = df[['Original', 'Simplified']].values.astype(str)
-    if tokenize:
-        sentences = np.vectorize(nist_tokenize)(sentences)
+    # if tokenize:
+    #     sentences = np.vectorize(nist_tokenize)(sentences)
     labels = np.array([label_to_int[label] for label in df[aspect].values])
     return sentences, labels
 

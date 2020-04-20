@@ -1,11 +1,11 @@
 # Reference-less Quality Estimation of Text Simplification Systems
 
-*Note: if you are looking for a tool to evaluate your simplification models, head over to [EASSE](https://github.com/feralvam/easse) instead.*
+This repository contains the implementation of the analysis and evaluation methods representend in Stodden et al. (2020). 
+In this paper, we investigate the relevance of text simplification an text readability features for Czech, German, 
+English, Spanish, and Italian text simplification corpora. Our multi-lingual and multi-domain corpus analysis shows 
+that the relevance of different features for text simplification is different per corpora, language, and domain.
+This implementation is based on the evaluation method used in [Martin et eal. (2018)]((https://www.aclweb.org/anthology/W18-7005)), but it extends it with more features and enables the analysis of other languages than English.
 
-This repository contains the original implementation of the evaluation methods presented in [Reference-less Quality Estimation of Text Simplification Systems](https://www.aclweb.org/anthology/W18-7005) (1st Workshop on Automatic Text Adaption, INLG 2018).
-The version that was used at submission time is on branch [submission](https://github.com/facebookresearch/text-simplification-evaluation/tree/submission).
-
-You can get a quick glance on what the code does in [demo/reference_less_evaluation.ipynb](https://github.com/facebookresearch/text-simplification-evaluation/blob/master/demo/reference_less_evaluation.ipynb).
 
 ## Getting Started
 
@@ -19,26 +19,21 @@ You can get a quick glance on what the code does in [demo/reference_less_evaluat
 ### Installing
 
 ```
-git clone git@github.com:facebookresearch/text-simplification-evaluation.git
+git clone https://github.com/rstodden/text-simplification-evaluation.git
 cd text-simplification-evaluation
 pip install -e .
 pip install -r requirements.txt
 ```
 
-## Running the tests
-```
-pytest tests/
-```
 
 ## References
 
-If you use this code, please cite:  
-L. Martin, S. Humeau, PE. Mazaré, E. De la Clergerie, A. Bordes, B. Sagot, [*Reference-less Quality Estimation of Text Simplification Systems*](https://arxiv.org/abs/1901.10746)
+If you use this code, please cite 
+* for the multi-lingual and cross-domain analysis: R. Stodden, and L. Kallmeyer (2020, to appear). A multi-lingual and cross-domain analysis of features for text simplification. In Proceedings of the Workshop on Tools and Resources to Empower People with REAding DIfficulties (READI), Marseille, France.
+* **and**
+* for the original evaluation code: L. Martin, S. Humeau, PE. Mazaré, E. De la Clergerie, A. Bordes, B. Sagot, [*Reference-less Quality Estimation of Text Simplification Systems*](https://www.aclweb.org/anthology/W18-7005/). In Proceedings of the 1st Workshop on Automatic Text Adaptation (ATA), Tilburg, the Netherlands.
+  
 
-## Author
-
-If you have any question, please contact the author:
-**Louis Martin** ([louismartin@fb.com](mailto:louismartin@fb.com))
 
 ## License
 

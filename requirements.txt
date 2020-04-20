@@ -8,3 +8,11 @@ python-Levenshtein
 gitpython
 git+https://github.com/pytorch/fairseq@e286243c68f1589a781488580fc19388714612be
 git+https://github.com/Maluuba/nlg-eval.git
+spacy>=2.2.3
+gensim>=3.8.1
+nltk>=3.4.5
+spacy-stanza>=0.2.1
+stanza>=1.0.0
+spacy-udpipe>=0.1.0
+pyphen>=0.9.5
+spacy-transformers>=0.5.1
