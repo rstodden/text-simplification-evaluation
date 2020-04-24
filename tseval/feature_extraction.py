@@ -266,14 +266,14 @@ def get_rewritten_words(c, s, lang):
     if 'SPACY_MODEL' not in globals():
         print("load spacy model")
         global SPACY_MODEL
-        """if lang == "en":
+        if lang == "en":
             SPACY_MODEL = spacy.load("en_core_web_sm")
         elif lang == "cs":
             SPACY_MODEL = spacy_udpipe.load(lang)
         else:
-            SPACY_MODEL = spacy.load(lang + "_core_news_sm")"""
-        snlp = stanza.Pipeline(lang=lang)
-        SPACY_MODEL = StanzaLanguage(snlp)
+            SPACY_MODEL = spacy.load(lang + "_core_news_sm")
+        #snlp = stanza.Pipeline(lang=lang)
+        #SPACY_MODEL = StanzaLanguage(snlp)
     added_words = get_added_words(c, s, lang)
     rewritten_or_added = [SPACY_MODEL(token)[0].lemma_ for token in flatten_counter(Counter(to_words(s, lang)) - Counter(to_words(c, lang)))]
     return list(set(rewritten_or_added).difference(set(added_words)))
@@ -353,14 +353,14 @@ def get_n_rewritten_words(c, s, lang):
     if 'SPACY_MODEL' not in globals():
         print("load spacy model")
         global SPACY_MODEL
-        """if lang == "en":
+        if lang == "en":
             SPACY_MODEL = spacy.load("en_core_web_sm")
         elif lang == "cs":
             SPACY_MODEL = spacy_udpipe.load(lang)
         else:
-            SPACY_MODEL = spacy.load(lang + "_core_news_sm")"""
-        snlp = stanza.Pipeline(lang=lang)
-        SPACY_MODEL = StanzaLanguage(snlp)
+            SPACY_MODEL = spacy.load(lang + "_core_news_sm")
+        #snlp = stanza.Pipeline(lang=lang)
+        #SPACY_MODEL = StanzaLanguage(snlp)
     added_words = get_added_words(c, s, lang)
     rewritten_or_added = [SPACY_MODEL(token)[0].lemma_ for token in
                           (Counter(to_words(s, lang)) - Counter(to_words(c, lang))).keys()]
