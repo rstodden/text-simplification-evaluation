@@ -11,8 +11,8 @@ from functools import lru_cache
 import os
 import spacy, spacy_udpipe
 import stanza
-from spacy_stanza import StanzaLanguage
-
+# from spacy_stanza import StanzaLanguage
+from spacy.pipeline._parser_internals.nonproj import is_nonproj_tree, is_nonproj_arc
 
 import Levenshtein
 import numpy as np
@@ -1131,7 +1131,7 @@ def is_non_projective(sentence, lang):
     """if at least one of the sentence in the complex or simple sentences is non-projective True will be returned"""
     heads = [token.head.i for token in sentence]
     #print(heads, list(sentence.sents))
-    is_non_projective_value = spacy.syntax.nonproj.is_nonproj_tree(heads)
+    is_non_projective_value = is_nonproj_tree(heads)
     return int(is_non_projective_value)
 
 
@@ -1139,7 +1139,7 @@ def ratio_non_projective_arcs(sentence, lang):
     n = 0
     heads = [token.head.i for token in sentence]
     for head in heads:
-        if spacy.syntax.nonproj.is_nonproj_arc(head, heads):
+        if is_nonproj_arc(head, heads):
             n += 1
     return min(1, n/len(sentence))
 
@@ -1191,15 +1191,21 @@ def get_avg_length_phrase(sentence, lang, type):
     for token in sentence:
         if len(list(token.children)) > 0 and token.pos_.lower() in get_pos_tags(lang, type):
             phrase_length.append(len([t for t in token.subtree]))
-    return np.mean(phrase_length)
+    if len(phrase_length) == 0:
+        return 0
+    else:
+        return np.mean(phrase_length)
 
 
 def get_avg_length_PP(sentence, lang):
     phrase_length = list()
     for token in sentence:
-        if len(list(token.children)) > 0 and token.pos_.lower() in get_dependency_label(lang, "case"):
+        if len(list(token.children)) > 0 and token.dep_.lower() in get_dependency_label(lang, "case"):
             phrase_length.append(len([t for t in token.subtree]))
-    return np.mean(phrase_length)
+    if len(phrase_length) == 0:
+         return 0
+    else:
+        return np.mean(phrase_length)
 
 
 
